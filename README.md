@@ -18,6 +18,6 @@ Join our community at Prazadenta Creations: [Link](https://discord.gg/pV5NqjXtgE
 
 ## 📃 Terms of Service & Privacy Policy
 
-[Terms of Service](https://github.com/adamant-process/ServerRecap/blob/main/terms.html)
+[Terms of Service](https://github.com/adamant-process/Cat-Mood-Switcher/blob/main/terms.html)
 
-[Privacy Policy](https://github.com/adamant-process/ServerRecap/blob/main/privacy.html)
+[Privacy Policy](https://github.com/adamant-process/Cat-Mood-Switcher/blob/main/privacy.html)

@@ -10,6 +10,13 @@ A simple site where you can click a button to change the mood of the cat emoji.
 
 ---
 
+## ⚙️ How to Use
+
+1. Click the link `Site Link` section to open the site.
+2. Click the `Change Mood` button to change the cats mood.
+
+---
+
 ## 📄 Help
 
 Join our community at Prazadenta Creations: [Link](https://discord.gg/pV5NqjXtgE)

@@ -74,6 +74,21 @@
     .credit a:hover {
       color: white;
     }
+    .volume-control {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+    }
+    .volume-icon {
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .volume-icon:hover {
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
@@ -84,7 +99,10 @@
     </div>
     <button class="button" onclick="randomMood()">Change Mood</button>
   </div>
-  <div class="credit">Made by <a href="https://sites.google.com/view/prazadenta" target="_blank">Prazadentä</a></div>
+  <div class="volume-control">
+    <img src="Icons/VolumeOn.png" alt="Volume" class="volume-icon" id="volumeIcon" onclick="toggleMute()">
+  </div>
+  <div class="credit">Made by <a href="https://sites.google.com/view/prazadenta" target="_blank" onclick="playWebsiteSound(event)">Prazadentä</a></div>
 
   <!-- Sound effects for each mood -->
   <audio id="sound-happy" src="Sounds/Happy.wav" preload="auto"></audio>
@@ -96,6 +114,10 @@
   <audio id="sound-sad" src="Sounds/Sad.wav" preload="auto"></audio>
   <audio id="sound-crying" src="Sounds/Laughing.wav" preload="auto"></audio>
   <audio id="sound-regular" src="Sounds/Regular.wav" preload="auto"></audio>
+  <audio id="sound-button" src="Sounds/Button.wav" preload="auto"></audio>
+  <audio id="sound-mute" src="Sounds/Mute.wav" preload="auto"></audio>
+  <audio id="sound-unmute" src="Sounds/Unmute.wav" preload="auto"></audio>
+  <audio id="sound-website" src="Sounds/Website.wav" preload="auto"></audio>
 
   <script>
     const moods = [
@@ -112,13 +134,54 @@
 
     const initialMood = moods[Math.floor(Math.random() * moods.length)];
     let currentEmoji = initialMood.emoji;
+    let isMuted = false;
+    let currentlyPlayingSound = null;
 
     document.addEventListener('DOMContentLoaded', function() {
       document.getElementById("catLabel").textContent = initialMood.label;
       document.getElementById("catEmoji").textContent = initialMood.emoji;
     });
 
+    function fadeOutSound(audio) {
+      const fadeOutInterval = setInterval(() => {
+        if (audio.volume > 0.1) {
+          audio.volume = Math.max(0, audio.volume - 0.1);
+        } else {
+          audio.pause();
+          audio.currentTime = 0;
+          clearInterval(fadeOutInterval);
+        }
+      }, 50);
+    }
+
+    function playButtonSound() {
+      const buttonSound = document.getElementById('sound-button');
+      buttonSound.volume = isMuted ? 0 : 1.0;
+      buttonSound.currentTime = 0;
+      buttonSound.play();
+    }
+
+    function playWebsiteSound(event) {
+      const buttonSound = document.getElementById('sound-button');
+      buttonSound.volume = isMuted ? 0 : 1.0;
+      buttonSound.currentTime = 0;
+      buttonSound.play();
+      
+      const websiteSound = document.getElementById('sound-website');
+      websiteSound.volume = isMuted ? 0 : 1.0;
+      websiteSound.currentTime = 0;
+      websiteSound.play();
+    }
+
     function randomMood() {
+      // Fade out currently playing sound if any
+      if (currentlyPlayingSound && !currentlyPlayingSound.paused) {
+        fadeOutSound(currentlyPlayingSound);
+      }
+
+      // Play button sound
+      playButtonSound();
+
       let mood;
       do {
         mood = moods[Math.floor(Math.random() * moods.length)];
@@ -128,10 +191,36 @@
       document.getElementById("catEmoji").textContent = mood.emoji;
 
       const sound = document.getElementById(mood.soundId);
+      sound.volume = isMuted ? 0 : 1.0;
       sound.currentTime = 0;
       sound.play();
+      currentlyPlayingSound = sound;
+    }
+
+    function toggleMute() {
+      // Play button sound first, then mute or unmute sound
+      const buttonSound = document.getElementById('sound-button');
+      buttonSound.volume = 1.0; // Always play at full volume
+      buttonSound.currentTime = 0;
+      buttonSound.play();
+      
+      const muteSound = document.getElementById(isMuted ? 'sound-unmute' : 'sound-mute');
+      muteSound.volume = 1.0; // Always play at full volume
+      muteSound.currentTime = 0;
+      muteSound.play();
+      
+      // Now toggle the mute state
+      isMuted = !isMuted;
+      const icon = document.getElementById('volumeIcon');
+      icon.src = isMuted ? 'Icons/VolumeOff.png' : 'Icons/VolumeOn.png';
+      
+      // Apply mute state to currently playing sound AFTER the sounds start
+      setTimeout(() => {
+        if (currentlyPlayingSound && !currentlyPlayingSound.paused) {
+          currentlyPlayingSound.volume = isMuted ? 0 : 1.0;
+        }
+      }, 100);
     }
   </script>
 </body>
 </html>
-

@@ -84,29 +84,40 @@
     </div>
     <button class="button" onclick="randomMood()">Change Mood</button>
   </div>
-  <div class="credit">Made by <a href="https://linktr.ee/Prazadenta" target="_blank">Prazadentä</a></div>
+  <div class="credit">Made by <a href="https://sites.google.com/view/prazadenta" target="_blank">Prazadentä</a></div>
+
+  <!-- Sound effects for each mood -->
+  <audio id="sound-happy" src="Sounds/Happy.wav" preload="auto"></audio>
+  <audio id="sound-mad" src="Sounds/Mad.wav" preload="auto"></audio>
+  <audio id="sound-shocked" src="Sounds/Shocked.wav" preload="auto"></audio>
+  <audio id="sound-loving" src="Sounds/Loving.wav" preload="auto"></audio>
+  <audio id="sound-playful" src="Sounds/Playful.wav" preload="auto"></audio>
+  <audio id="sound-cool" src="Sounds/Cool.wav" preload="auto"></audio>
+  <audio id="sound-sad" src="Sounds/Sad.wav" preload="auto"></audio>
+  <audio id="sound-crying" src="Sounds/Crying.wav" preload="auto"></audio>
+  <audio id="sound-regular" src="Sounds/Regular.wav" preload="auto"></audio>
+
   <script>
     const moods = [
-      { label: "Happy Cat", emoji: "😸" },
-      { label: "Mad Cat", emoji: "😾" },
-      { label: "Shocked Cat", emoji: "🙀" },
-      { label: "Loving Cat", emoji: "😻" },
-      { label: "Playful Cat", emoji: "😺" },
-      { label: "Cool Cat", emoji: "😼" },
-      { label: "Sad Cat", emoji: "😿" },
-      { label: "Crying Cat", emoji: "😹" },
-      { label: "Regular Cat", emoji: "🐱" }
+      { label: "Happy Cat", emoji: "😸", soundId: "sound-happy" },
+      { label: "Mad Cat", emoji: "😾", soundId: "sound-mad" },
+      { label: "Shocked Cat", emoji: "🙀", soundId: "sound-shocked" },
+      { label: "Loving Cat", emoji: "😻", soundId: "sound-loving" },
+      { label: "Playful Cat", emoji: "😺", soundId: "sound-playful" },
+      { label: "Cool Cat", emoji: "😼", soundId: "sound-cool" },
+      { label: "Sad Cat", emoji: "😿", soundId: "sound-sad" },
+      { label: "Crying Cat", emoji: "😹", soundId: "sound-crying" },
+      { label: "Regular Cat", emoji: "🐱", soundId: "sound-regular" }
     ];
-    
-    // Set random starting mood
+
     const initialMood = moods[Math.floor(Math.random() * moods.length)];
     let currentEmoji = initialMood.emoji;
-    
-    // Set the initial display
+
     document.addEventListener('DOMContentLoaded', function() {
       document.getElementById("catLabel").textContent = initialMood.label;
       document.getElementById("catEmoji").textContent = initialMood.emoji;
     });
+
     function randomMood() {
       let mood;
       do {
@@ -115,6 +126,10 @@
       currentEmoji = mood.emoji;
       document.getElementById("catLabel").textContent = mood.label;
       document.getElementById("catEmoji").textContent = mood.emoji;
+
+      const sound = document.getElementById(mood.soundId);
+      sound.currentTime = 0;
+      sound.play();
     }
   </script>
 </body>
